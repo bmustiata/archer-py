@@ -1,0 +1,3 @@
+NAME: py3-exe
+arg0: project_archer
+project_archer: true
