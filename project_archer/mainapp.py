@@ -18,7 +18,7 @@ def main():
         $ project test""")
         quit(1)
 
-    env.define_command(run_mode, 'eval `%s -m project_archer.project --internalRunMode=%s $@`' % (sys.executable, run_mode))
+    env.define_command(run_mode, 'eval "$(%s -m project_archer.project --internalRunMode=%s $@)"' % (sys.executable, run_mode))
     env.flush()
 
 

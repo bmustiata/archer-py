@@ -39,7 +39,7 @@ def select_project(args, env):
     # 5. export the commands
     export_commands(project_data['commands'], env)
 
-    print(project_data['name'], project_name)
+    #print(project_data['name'], project_name)
     env.log("Activated " + args.internalRunMode + ": " + project_data['name'])
     env.set_envvar("CIPLOGIC_ARCHER_CURRENT_" + args.internalRunMode.upper(),
                    project_name)

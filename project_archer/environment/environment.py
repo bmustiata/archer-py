@@ -1,3 +1,5 @@
+import shlex
+
 # Because we want to export variables to the shell running the script, we can't
 # actually interact with the environment directly from the script (and have it
 # persist) - instead, we output the bash commands which will modify the
@@ -6,9 +8,9 @@
 class BashEnvironment:
     def __init__(self):
         self._execution = ""
-    
+
     def set_envvar(self, name, value):
-        self._execution += "export " + escape(name) + "='" + escape(value) + "'\n"
+        self._execution += "export " + escape(name) + "=" + shlex.quote(value) + "\n"
         return self
 
     def unset_envvar(self, name):
@@ -16,11 +18,11 @@ class BashEnvironment:
         return self
 
     def log(self, message):
-        self._execution += "echo -e $'" + escape(message) + "'\n"
+        self._execution += "echo " + shlex.quote(message) + "\n"
         return self
 
     def define_command(self, name, body):
-        self._execution += ("function " + escape(name) + "() {\t" +
+        self._execution += (escape(name) + "() {\n" +
             "\n\t".join(line for line in body.split('\n') if line) +
             "\n}\n")
         return self
@@ -34,8 +36,9 @@ class BashEnvironment:
         return self
 
     def flush(self):
-            print(self._execution.replace("\n", ";"))
-            return self
+        #print(self._execution.replace("\n", ";"))
+        print(self._execution)
+        return self
 
 def escape(message):
     if type(message) is not str:
