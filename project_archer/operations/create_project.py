@@ -1,3 +1,5 @@
+import os
+
 from project_archer.environment.read_shell_parameters import project_folder
 
 def create_new_project(args, env):
