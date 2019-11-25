@@ -8,7 +8,7 @@ packages = find_packages()
 
 setup(
     name='project_archer',
-    version='1.0.0',
+    version='0.1.4',
     description='Switch projects with ease.',
     long_description=readme,
     author='Bogdan Mustiata',
@@ -19,7 +19,8 @@ setup(
             "archer = project_archer.mainapp:main"
         ]
     },
-    install_requires=[],
+    install_requires=[
+        "termcolor-util"],
     packages=packages,
     package_data={
         '': ['*.txt', '*.rst']
