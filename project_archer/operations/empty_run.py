@@ -1,6 +1,7 @@
 from project_archer.environment.read_shell_parameters import current_project
 from project_archer.operations.list_projects import list_projects
 
+
 def empty_project_run(args, env):
     project = current_project(args.internalRunMode)
     if project:

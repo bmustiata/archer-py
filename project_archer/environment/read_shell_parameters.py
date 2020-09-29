@@ -7,6 +7,10 @@ parser.add_argument('-n', '--new', metavar="PROJECT",
     help="create a new project")
 parser.add_argument('-e', '--edit', action='store_true',
     help="edit the given project, or the current project")
+parser.add_argument('-z', '--zone', metavar="ZONE",
+    help="specify the zone to be used")
+parser.add_argument('-zc', '--zone-clear', action='store_true',
+    help="clear the zone to be used")
 parser.add_argument('--layout', action='store_true',
     help="specify that we want to use the layouts")
 parser.add_argument('--internalRunMode', required=True, metavar="MODE",
@@ -16,8 +20,14 @@ parser.add_argument('-l', '--list', action='store_true',
 
 import os, os.path
 
+
 def current_project(run_mode):
     return os.getenv("CIPLOGIC_ARCHER_CURRENT_" + run_mode.upper())
+
+
+def current_zone(run_mode):
+    return os.getenv("CIPLOGIC_ARCHER_CURRENT_" + run_mode.upper() + "_ZONE", "")
+
 
 def archer_home(subpath):
     if 'ARCHER_HOME' in os.environ:
@@ -32,8 +42,10 @@ def archer_home(subpath):
     else:
         return path
 
+
 def project_folder(args):
     if args.layout:
         return archer_home(args.internalRunMode + "s/layouts")
     else:
-        return archer_home(args.internalRunMode + "s")
+        subpath = os.path.join(args.internalRunMode + "s", current_zone(args.internalRunMode))
+        return archer_home(subpath)

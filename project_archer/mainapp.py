@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import sys
 
 from project_archer.environment.environment import BashEnvironment
@@ -10,13 +11,13 @@ def main():
     if len(sys.argv) <= 1:
         print("""You need to define a run mode, e.g.:
 
-        $ . archer.sh
+        $ . archer.py
         $ project -n test
         $ project test""")
         quit(1)
 
     for run_mode in sys.argv[1:]:
-        env.define_command(run_mode, 'eval "$(%s -m project_archer.project --internalRunMode=%s $@)"' % (sys.executable, run_mode))
+        env.define_command(run_mode, 'eval "$(%s -m project_archer.project --internalRunMode=%s $@)"' % ("python3", run_mode))
 
     env.flush()
 

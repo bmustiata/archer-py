@@ -1,10 +1,17 @@
 import os
 
-from project_archer.environment.read_shell_parameters import archer_home, current_project
+from project_archer.environment.read_shell_parameters import archer_home, current_project, current_zone
 from project_archer.storage.project_data import read_project_yml
 
+
 def select_project(args, env):
-    project_name = args.project
+    zone = current_zone(args.internalRunMode)
+
+    if zone:
+        project_name = os.path.join(zone, args.project)
+    else:
+        project_name = args.project
+
     project_data = read_project_data(project_name, args.internalRunMode)
 
     # 1. check if the project can be activated
@@ -13,17 +20,17 @@ def select_project(args, env):
         if not os.getenv(v) and v not in project_data['exports']]
 
     if len(missing_envvars):
-        env.log("Unable to activate: " + project_name + "!");
+        env.log("Unable to activate: " + project_name + "!")
         env.log("Missing environment variables: '" + "', '".join(missing_envvars) + "'.")
         return # bailing out
 
     old_project_name = current_project(args.internalRunMode)
-    if (old_project_name == project_name):
-        env.log("The current " + args.internalRunMode + " is already: " + project_name + ".");
+    if old_project_name == project_name:
+        env.log("The current " + args.internalRunMode + " is already: " + project_name + ".")
         return # bailing out
 
     # 2. deactivate the previous project
-    if (old_project_name):
+    if old_project_name:
         old_project = read_project_data(old_project_name, args.internalRunMode)
         execute_commands(old_project['deactivate'], env)
         unset_commands(old_project['commands'], env)
@@ -41,8 +48,8 @@ def select_project(args, env):
 
     #print(project_data['name'], project_name)
     env.log("Activated " + args.internalRunMode + ": " + project_data['name'])
-    env.set_envvar("CIPLOGIC_ARCHER_CURRENT_" + args.internalRunMode.upper(),
-                   project_name)
+    env.set_envvar("CIPLOGIC_ARCHER_CURRENT_" + args.internalRunMode.upper(), project_name)
+
 
 def read_project_data(project_name, internal_run_mode, projects_folder=None):
     if not projects_folder:
