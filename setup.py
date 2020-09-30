@@ -18,7 +18,8 @@ setup(
     install_requires=[
         "termcolor-util",
         "click",
-        "PyYAML >=5.1, <5.2"],
+        "PyYAML >=5.1, <5.2",
+    ],
     packages=packages,
     package_data={"": ["*.txt", "*.rst"]},
 )
