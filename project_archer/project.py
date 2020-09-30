@@ -20,10 +20,12 @@ out = io.StringIO()
 err = io.StringIO()
 try:
     with redirect_stdout(out), redirect_stderr(err):
-            args = read_shell_parameters.parser.parse_args()
+        args = read_shell_parameters.parser.parse_args()
 except SystemExit:
-    if out.getvalue(): env.log(out.getvalue().strip())
-    if err.getvalue(): env.log(err.getvalue().strip())
+    if out.getvalue():
+        env.log(out.getvalue().strip())
+    if err.getvalue():
+        env.log(err.getvalue().strip())
 
 if args:
     if args.list:
@@ -36,7 +38,7 @@ if args:
         select_zone(args, env)
     elif args.zone_clear:
         clear_zone(args, env)
-    else: # project selection or empty run
+    else:  # project selection or empty run
         if not args.project:
             empty_project_run(args, env)
         else:

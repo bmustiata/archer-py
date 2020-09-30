@@ -1,6 +1,9 @@
 import os
 
-from project_archer.environment.read_shell_parameters import project_folder, current_project
+from project_archer.environment.read_shell_parameters import (
+    project_folder,
+    current_project,
+)
 
 
 def edit_project(args, env):

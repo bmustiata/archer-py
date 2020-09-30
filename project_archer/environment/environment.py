@@ -5,6 +5,7 @@ import shlex
 # persist) - instead, we output the bash commands which will modify the
 # environment, which the parent shell can then |eval|
 
+
 class BashEnvironment:
     def __init__(self):
         self._execution = ""
@@ -22,9 +23,12 @@ class BashEnvironment:
         return self
 
     def define_command(self, name, body):
-        self._execution += (escape(name) + "() {\n" +
-            "\n\t".join(line for line in body.split('\n') if line) +
-            "\n}\n")
+        self._execution += (
+            escape(name)
+            + "() {\n"
+            + "\n\t".join(line for line in body.split("\n") if line)
+            + "\n}\n"
+        )
         return self
 
     def remove_command(self, name):
@@ -36,12 +40,13 @@ class BashEnvironment:
         return self
 
     def flush(self):
-        #print(self._execution.replace("\n", ";"))
+        # print(self._execution.replace("\n", ";"))
         print(self._execution)
         return self
+
 
 def escape(message):
     if type(message) is not str:
         message = str(message)
 
-    return message.replace('\n', '\\n').replace("'", "\\'")
+    return message.replace("\n", "\\n").replace("'", "\\'")

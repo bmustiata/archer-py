@@ -2,7 +2,10 @@ import os
 
 from termcolor_util import cyan, red
 
-from project_archer.environment.read_shell_parameters import project_folder, current_zone
+from project_archer.environment.read_shell_parameters import (
+    project_folder,
+    current_zone,
+)
 from project_archer.storage.project_data import read_project_yml
 
 
@@ -32,4 +35,9 @@ def list_projects(args, env):
 
         file_data = open(os.path.join(folder, filename))
         project_data = read_project_yml(file_data)
-        env.log("- " + cyan(os.path.splitext(filename)[0], bold=True) + ": " + project_data['name'])
+        env.log(
+            "- "
+            + cyan(os.path.splitext(filename)[0], bold=True)
+            + ": "
+            + project_data["name"]
+        )
