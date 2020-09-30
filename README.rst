@@ -175,7 +175,8 @@ Note that everything becomes far more easier, since we don’t need to
 move around ``war`` files, search for running tomcats, and restarting
 services manually, cleaning up old things. etc.
 
-Here’s actual layouts that I use for the
-`tomcat-server <https://raw.githubusercontent.com/bmustiata/dotfiles/master/.archer/servers/layouts/tomcat-server.yml>`__
-and the `maven
-project <https://raw.githubusercontent.com/bmustiata/dotfiles/master/.archer/projects/layouts/maven.yml>`__.
+Here’s actual layouts that I use for the `tomcat-server`_ and the `maven
+project`_.
+
+.. _tomcat-server: https://raw.githubusercontent.com/bmustiata/dotfiles/master/.archer/servers/layouts/tomcat-server.yml
+.. _maven project: https://raw.githubusercontent.com/bmustiata/dotfiles/master/.archer/projects/layouts/maven.yml
