@@ -5,6 +5,7 @@ from project_archer.environment.read_shell_parameters import (
     current_project,
     current_zone,
 )
+from project_archer.operations.select_zone import select_zone_str
 from project_archer.storage.project_data import read_project_yml
 
 
@@ -15,6 +16,14 @@ def select_project(args, env):
         project_name = os.path.join(zone, args.project)
     else:
         project_name = args.project
+
+    if is_no_project_file(project_name, args.internalRunMode) and is_zone_folder(project_name, args.internalRunMode):
+        select_zone_str(
+            internal_run_mode=args.internalRunMode, 
+            zone=project_name, 
+            env=env
+        )
+        return
 
     project_data = read_project_data(project_name, args.internalRunMode)
 
@@ -64,11 +73,32 @@ def select_project(args, env):
     )
 
 
-def read_project_data(project_name, internal_run_mode, projects_folder=None):
-    if not projects_folder:
-        projects_folder = archer_home(internal_run_mode + "s")
+def is_zone_folder(project_name: str, internal_run_mode: str) -> bool:
+    project_file = get_project_file_name(
+        internal_run_mode=internal_run_mode,
+        project_name=project_name,
+        project_file_extension="",
+    )
 
-    project_file = os.path.join(projects_folder, project_name + ".yml")
+    return os.path.isdir(project_file)
+
+
+def is_no_project_file(project_name: str, internal_run_mode: str) -> bool:
+    project_file = get_project_file_name(
+        internal_run_mode=internal_run_mode,
+        project_name=project_name,
+    )
+
+    return not os.path.exists(project_file)
+
+
+def read_project_data(project_name, internal_run_mode, projects_folder=None):
+    project_file = get_project_file_name(
+        internal_run_mode=internal_run_mode,
+        project_name=project_name,
+        projects_folder=projects_folder
+    )
+
     project_data = read_project_yml(open(project_file))
 
     result = {
@@ -95,6 +125,19 @@ def read_project_data(project_name, internal_run_mode, projects_folder=None):
     mix(result, project_data)
 
     return result
+
+
+def get_project_file_name(*,
+                          internal_run_mode: str,
+                          project_name: str,
+                          project_file_extension: str = ".yml",
+                          projects_folder: str = None) -> str:
+    if not projects_folder:
+        projects_folder = archer_home(internal_run_mode + "s")
+
+    project_file = os.path.join(projects_folder, project_name + project_file_extension)
+
+    return project_file
 
 
 # mutates source
