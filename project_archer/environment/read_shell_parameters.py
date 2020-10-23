@@ -42,7 +42,7 @@ def current_zone(run_mode):
     return os.getenv("CIPLOGIC_ARCHER_CURRENT_" + run_mode.upper() + "_ZONE", "")
 
 
-def archer_home(subpath):
+def archer_home(subpath) -> str:
     if "ARCHER_HOME" in os.environ:
         path = os.environ["ARCHER_HOME"]
     else:

@@ -1,3 +1,4 @@
+from typing import Optional
 import os
 
 from project_archer.environment.read_shell_parameters import (
@@ -17,11 +18,19 @@ def select_project(args, env):
     else:
         project_name = args.project
 
+<<<<<<< HEAD
     if is_no_project_file(project_name, args.internalRunMode) and is_zone_folder(project_name, args.internalRunMode):
         select_zone_str(
             internal_run_mode=args.internalRunMode, 
             zone=project_name, 
             env=env
+=======
+    if is_no_project_file(project_name, args.internalRunMode) and is_zone_folder(
+        project_name, args.internalRunMode
+    ):
+        select_zone_str(
+            internal_run_mode=args.internalRunMode, zone=project_name, env=env
+>>>>>>> 14eb88f87c480fb23d0bbbfb5aed3213087be7e0
         )
         return
 
@@ -96,7 +105,11 @@ def read_project_data(project_name, internal_run_mode, projects_folder=None):
     project_file = get_project_file_name(
         internal_run_mode=internal_run_mode,
         project_name=project_name,
+<<<<<<< HEAD
         projects_folder=projects_folder
+=======
+        projects_folder=projects_folder,
+>>>>>>> 14eb88f87c480fb23d0bbbfb5aed3213087be7e0
     )
 
     project_data = read_project_yml(open(project_file))
@@ -127,11 +140,21 @@ def read_project_data(project_name, internal_run_mode, projects_folder=None):
     return result
 
 
+<<<<<<< HEAD
 def get_project_file_name(*,
                           internal_run_mode: str,
                           project_name: str,
                           project_file_extension: str = ".yml",
                           projects_folder: str = None) -> str:
+=======
+def get_project_file_name(
+    *,
+    internal_run_mode: str,
+    project_name: str,
+    project_file_extension: str = ".yml",
+    projects_folder: Optional[str] = None
+) -> str:
+>>>>>>> 14eb88f87c480fb23d0bbbfb5aed3213087be7e0
     if not projects_folder:
         projects_folder = archer_home(internal_run_mode + "s")
 
