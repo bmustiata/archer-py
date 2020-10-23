@@ -18,8 +18,12 @@ class BashEnvironment:
         self._execution += "unset " + escape(name) + "\n"
         return self
 
-    def log(self, message):
-        self._execution += "echo " + shlex.quote(message) + "\n"
+    def log(self, message, newline: bool = True):
+        if newline:
+            self._execution += "echo " + shlex.quote(message) + "\n"
+        else:
+            self._execution += "echo -n " + shlex.quote(message) + "\n"
+
         return self
 
     def define_command(self, name, body):

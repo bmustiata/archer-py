@@ -1,4 +1,5 @@
 import argparse
+from typing import Optional
 
 parser = argparse.ArgumentParser()
 parser.add_argument(
@@ -38,7 +39,10 @@ def current_project(run_mode):
     return os.getenv("CIPLOGIC_ARCHER_CURRENT_" + run_mode.upper())
 
 
-def current_zone(run_mode):
+def current_zone(run_mode, *, custom_zone: Optional[str] = None):
+    if custom_zone is not None:
+        return custom_zone
+
     return os.getenv("CIPLOGIC_ARCHER_CURRENT_" + run_mode.upper() + "_ZONE", "")
 
 
@@ -56,11 +60,11 @@ def archer_home(subpath) -> str:
         return path
 
 
-def project_folder(args):
+def project_folder(args, *, custom_zone: Optional[str] = None):
     if args.layout:
         return archer_home(args.internalRunMode + "s/layouts")
     else:
         subpath = os.path.join(
-            args.internalRunMode + "s", current_zone(args.internalRunMode)
+            args.internalRunMode + "s", current_zone(args.internalRunMode, custom_zone=custom_zone)
         )
         return archer_home(subpath)

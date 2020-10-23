@@ -1,4 +1,5 @@
 import os
+from typing import Optional
 
 from termcolor_util import cyan, red
 
@@ -9,9 +10,9 @@ from project_archer.environment.read_shell_parameters import (
 from project_archer.storage.project_data import read_project_yml
 
 
-def list_projects(args, env):
-    folder = project_folder(args)
-    zone = current_zone(args.internalRunMode)
+def list_projects(args, env, *, custom_zone: Optional[str] = None):
+    folder = project_folder(args, custom_zone=custom_zone)
+    zone = current_zone(args.internalRunMode) if custom_zone is None else custom_zone
 
     if zone:
         env.log(red("= " + zone, bold=True))

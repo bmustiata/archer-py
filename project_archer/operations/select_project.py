@@ -1,5 +1,7 @@
-from typing import Optional
 import os
+from typing import Optional
+
+from termcolor_util import red, green
 
 from project_archer.environment.read_shell_parameters import (
     archer_home,
@@ -13,28 +15,27 @@ from project_archer.storage.project_data import read_project_yml
 def select_project(args, env):
     zone = current_zone(args.internalRunMode)
 
-    if zone:
+    if zone and '/' not in args.project:
         project_name = os.path.join(zone, args.project)
     else:
         project_name = args.project
 
-<<<<<<< HEAD
-    if is_no_project_file(project_name, args.internalRunMode) and is_zone_folder(project_name, args.internalRunMode):
-        select_zone_str(
-            internal_run_mode=args.internalRunMode, 
-            zone=project_name, 
-            env=env
-=======
     if is_no_project_file(project_name, args.internalRunMode) and is_zone_folder(
         project_name, args.internalRunMode
     ):
         select_zone_str(
-            internal_run_mode=args.internalRunMode, zone=project_name, env=env
->>>>>>> 14eb88f87c480fb23d0bbbfb5aed3213087be7e0
+            args=args, env=env, zone=project_name
         )
+
         return
 
+    if '/' in args.project:
+        select_zone_str(
+            args=args, env=env, zone="/".join(args.project.split("/")[:-1])
+        )
+
     project_data = read_project_data(project_name, args.internalRunMode)
+    env.log("Loading " + args.internalRunMode + ": " + red(project_data["name"], bold=True))
 
     # 1. check if the project can be activated
     required_envvars = project_data["requires"]
@@ -76,7 +77,7 @@ def select_project(args, env):
     export_commands(project_data["commands"], env)
 
     # print(project_data['name'], project_name)
-    env.log("Activated " + args.internalRunMode + ": " + project_data["name"])
+    env.log(green("Activated " + args.internalRunMode + ": ") + red(project_data["name"], bold=True))
     env.set_envvar(
         "CIPLOGIC_ARCHER_CURRENT_" + args.internalRunMode.upper(), project_name
     )
@@ -105,11 +106,7 @@ def read_project_data(project_name, internal_run_mode, projects_folder=None):
     project_file = get_project_file_name(
         internal_run_mode=internal_run_mode,
         project_name=project_name,
-<<<<<<< HEAD
-        projects_folder=projects_folder
-=======
         projects_folder=projects_folder,
->>>>>>> 14eb88f87c480fb23d0bbbfb5aed3213087be7e0
     )
 
     project_data = read_project_yml(open(project_file))
@@ -140,13 +137,6 @@ def read_project_data(project_name, internal_run_mode, projects_folder=None):
     return result
 
 
-<<<<<<< HEAD
-def get_project_file_name(*,
-                          internal_run_mode: str,
-                          project_name: str,
-                          project_file_extension: str = ".yml",
-                          projects_folder: str = None) -> str:
-=======
 def get_project_file_name(
     *,
     internal_run_mode: str,
@@ -154,7 +144,6 @@ def get_project_file_name(
     project_file_extension: str = ".yml",
     projects_folder: Optional[str] = None
 ) -> str:
->>>>>>> 14eb88f87c480fb23d0bbbfb5aed3213087be7e0
     if not projects_folder:
         projects_folder = archer_home(internal_run_mode + "s")
 
