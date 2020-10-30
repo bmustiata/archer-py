@@ -65,6 +65,10 @@ def select_project(args, env):
         unset_envvars(old_project["exports"], env)
 
     # 3. export the environment variables
+    env.set_envvar(
+        "CIPLOGIC_ARCHER_CURRENT_" + args.internalRunMode.upper(), project_name
+    )
+
     for export_name in project_data["exports"]:
         env.set_envvar(export_name, project_data["exports"][export_name])
 
@@ -74,14 +78,7 @@ def select_project(args, env):
     # 5. export the commands
     export_commands(project_data["commands"], env)
 
-    # print(project_data['name'], project_name)
-    env.log(
-        green("Activated " + args.internalRunMode + ": ")
-        + red(project_data["name"], bold=True)
-    )
-    env.set_envvar(
-        "CIPLOGIC_ARCHER_CURRENT_" + args.internalRunMode.upper(), project_name
-    )
+    env.log(green("Activated " + args.internalRunMode + ": ") + red(project_data["name"], bold=True))
 
 
 def is_zone_folder(project_name: str, internal_run_mode: str) -> bool:
